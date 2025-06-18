@@ -176,9 +176,12 @@ label {
     /* Espacio entre header y navbar */
 }
 
+/* TAMAÑO DE IMAGEN: Logo InterAduana */
 .app-logo {
     height: 100px;
-    /* Tamaño del logo principal, ajusta según necesites */
+    /* Tamaño por defecto para el logo principal */
+    width: auto;
+    /* Mantiene la proporción */
     margin-bottom: 10px;
     /* Espacio entre el logo y el título */
 }
@@ -220,7 +223,6 @@ label {
     /* Espacio entre los elementos del header */
 }
 
-/* El welcome-text y el dark-mode-toggle-container ahora se manejarán en la navbar-header */
 .navbar-header .welcome-text {
     margin: 0;
     color: #f0f0f0;
@@ -261,31 +263,38 @@ label {
     transform: translateY(-2px);
 }
 
-/* --- Toggle Switch for Dark Mode (NUEVAS REGLAS PARA POSICIONAMIENTO) --- */
+/* --- Toggle Switch for Dark Mode (POSICIONAMIENTO EN ESQUINA SUPERIOR DERECHA) --- */
 .dark-mode-toggle-container.top-right {
-    /* Añadir esta clase en HTML */
     position: fixed;
-    /* O 'absolute' si quieres que se desplace con el scroll del header */
+    /* Mantiene el elemento en la misma posición relativa a la ventana del navegador */
     top: 20px;
-    /* Distancia desde la parte superior */
+    /* A 20px del borde superior */
     right: 20px;
-    /* Distancia desde la derecha */
+    /* A 20px del borde derecho */
     z-index: 1000;
-    /* Asegura que esté por encima de otros elementos */
+    /* Asegura que esté por encima de casi todos los demás elementos */
     display: flex;
-    /* Asegura que el contenido se alinee */
+    /* Usa flexbox para alinear el texto y el switch */
     align-items: center;
+    /* Centra verticalmente el contenido */
     gap: 10px;
+    /* Espacio entre el texto y el switch */
     background: rgba(255, 255, 255, 0.1);
-    /* Fondo sutil para que se vea claro */
+    /* Fondo sutil para que sea visible sobre el degradado */
     padding: 8px 12px;
+    /* Espaciado interno */
     border-radius: 8px;
+    /* Bordes redondeados */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Sombra sutil */
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+    /* Transición para modo oscuro */
 }
 
 .dark-mode .dark-mode-toggle-container.top-right {
     background: rgba(0, 0, 0, 0.2);
     /* Fondo oscuro para el toggle en modo oscuro */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 .dark-mode-toggle-container label[for="darkModeToggle"] {
@@ -565,9 +574,12 @@ ul li button {
     /* Mantener la transición para modo oscuro */
 }
 
+/* TAMAÑO DE IMAGEN: Logo Gobierno de Chile */
 .footer-logo {
     height: 60px;
     /* Tamaño del logo del gobierno */
+    width: auto;
+    /* Mantiene la proporción */
     opacity: 0.8;
     transition: opacity 0.3s ease;
 }
@@ -593,6 +605,7 @@ ul li button {
         padding: 20px 0;
     }
 
+    /* TAMAÑO DE IMAGEN: Logo InterAduana en desktop */
     .app-logo {
         height: 120px;
         /* Logo más grande en escritorio */
@@ -659,6 +672,8 @@ ul li button {
 }
 
 @media (max-width: 480px) {
+
+    /* TAMAÑO DE IMAGEN: Logo InterAduana en móviles */
     .app-logo {
         height: 80px;
         /* Ajuste del logo principal para pantallas muy pequeñas */
