@@ -1,0 +1,355 @@
+/* styles.css */
+
+/* --- Base Styles --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #3a6186, #89253e);
+    /* Fondo degradado */
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3 {
+    color: #f0f0f0;
+    /* Color de títulos */
+}
+
+/* --- General Elements --- */
+input,
+button,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 1em;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #ff8c00;
+    box-shadow: 0 0 5px rgba(255, 140, 0, 0.5);
+}
+
+button {
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    background-color: #e67e00;
+    transform: translateY(-2px);
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #e0e0e0;
+}
+
+/* --- Layout / Containers --- */
+.login-container,
+.section-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px 0;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.navbar ul li {
+    margin: 0;
+    cursor: pointer;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+.navbar ul li:hover {
+    background: rgba(255, 255, 255, 0.6);
+    color: #333;
+    transform: translateY(-2px);
+}
+
+/* --- Specific Buttons (Aprobar/Rechazar) --- */
+button.aprobar,
+button.aprobarFinal {
+    background-color: #28a745;
+    margin-right: 8px;
+}
+
+button.rechazar,
+button.rechazarFinal {
+    background-color: #dc3545;
+}
+
+/* Estilo para el botón de cerrar sesión */
+.logout-button {
+    background-color: #6c757d;
+    margin-top: 30px;
+    max-width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.logout-button:hover {
+    background-color: #5a6268;
+}
+
+/* --- List Styles --- */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ul li h3 {
+    margin: 0 0 10px 0;
+    color: #ff8c00;
+    font-size: 1.2em;
+    width: 100%;
+}
+
+ul li>div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+}
+
+ul li>div:last-child {
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+ul li button {
+    width: auto;
+    margin-top: 0;
+    padding: 8px 15px;
+    font-size: 0.85em;
+    border-radius: 6px;
+}
+
+/* Nuevo estilo para el botón de Abrir Archivo */
+.status-item button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.status-item button:hover {
+    background-color: #0056b3;
+}
+
+
+#errorMensaje {
+    color: #ffcccc;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* --- Estado de Documentos: Elegante y Formal --- */
+.status-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 2px 0;
+}
+
+.status-label {
+    font-weight: bold;
+    color: #e0e0e0;
+    flex-grow: 1;
+    text-align: left;
+    min-width: 120px;
+    box-sizing: border-box;
+}
+
+.status-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    min-width: 110px;
+    max-width: 150px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.status-pending {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.status-approved {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status-rejected {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* --- FAQ Styles --- */
+.faq-item {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.faq-item h3 {
+    color: #ff8c00;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.15em;
+}
+
+.faq-item p {
+    color: #e0e0e0;
+    line-height: 1.6;
+    font-size: 0.95em;
+}
+
+/* Media Queries para responsividad */
+@media (min-width: 768px) {
+    ul li {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    ul li>h3 {
+        width: auto;
+        flex-shrink: 0;
+        margin-right: 20px;
+    }
+
+    ul li>div {
+        flex-grow: 1;
+        justify-content: flex-end;
+        gap: 15px;
+    }
+
+    .status-item {
+        width: auto;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: 20px;
+    }
+
+    ul li>div:last-child {
+        width: auto;
+        margin-top: 0;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .status-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .status-label {
+        width: 100%;
+        text-align: left;
+    }
+
+    .status-indicator {
+        width: 100%;
+        max-width: none;
+        min-width: unset;
+    }
+
+    .status-item button {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}

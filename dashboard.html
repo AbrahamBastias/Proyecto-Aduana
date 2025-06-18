@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aduana - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul id="menu">
+        </ul>
+    </nav>
+
+    <section id="content" class="section-container">
+        <h2>Bienvenido, <span id="userName"></span></h2>
+        <p>Aquí podrás gestionar tus documentos y ver el estado de tu solicitud.</p>
+    </section>
+
+    <section id="documentos" class="section-container content-section">
+        <h2>Subir Documentos</h2>
+        <form id="documentForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required>
+
+            <label for="rut">RUT:</label>
+            <input type="text" id="rut" required>
+
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" required>
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required>
+
+            <label for="telefono">Número de Teléfono:</label>
+            <input type="text" id="telefono" required>
+
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nacimiento" required>
+
+            <label for="comentarios">Comentarios:</label>
+            <textarea id="comentarios"></textarea>
+
+            <h3>Subir archivos</h3>
+
+            <label for="foto_carnet">Foto de Carnet:</label>
+            <input type="file" id="foto_carnet" required>
+
+            <label for="declaracion_sag">Declaración Jurada de Ingreso de Alimentos o Animales:</label>
+            <input type="file" id="declaracion_sag" required>
+
+            <label for="elementos_pdi">Elementos Prohibidos:</label>
+            <input type="file" id="elementos_pdi" required>
+
+            <button type="submit">Enviar Documentos</button>
+        </form>
+    </section>
+
+    <section id="estado-solicitud" class="section-container content-section" style="display: none;">
+        <h2>Estado de su Solicitud</h2>
+        <p>Aquí podrá ver el progreso de la revisión de sus documentos.</p>
+        <ul id="listaEstadoSolicitud"></ul>
+    </section>
+
+    <section id="faq" class="section-container content-section" style="display: none;">
+        <h2>Preguntas Frecuentes (FAQ)</h2>
+        <div class="faq-item">
+            <h3>¿Qué documentos necesito para ingresar mercancías?</h3>
+            <p>Generalmente se requiere la factura comercial, la declaración de aduana, el conocimiento de embarque o
+                guía aérea, y certificaciones específicas (SAG, PDI) según el tipo de mercancía.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Cuánto tiempo tarda el proceso de revisión?</h3>
+            <p>El tiempo de revisión varía según el tipo de mercancía y la carga de trabajo de cada departamento (SAG,
+                PDI, Aduana). Recibirá notificaciones sobre el estado de sus documentos.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Puedo modificar un documento ya subido?</h3>
+            <p>Una vez subido y puesto en revisión, no se recomienda modificar los documentos directamente. Si necesita
+                hacer cambios, contacte con el departamento correspondiente o inicie una nueva solicitud si es
+                necesario.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Cómo sé si mi solicitud fue aprobada o rechazada?</h3>
+            <p>Recibirá notificaciones por correo electrónico y el estado de sus documentos se actualizará en la sección
+                "Estado de su Solicitud" de su panel de control.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Qué hago si mi solicitud es rechazada?</h3>
+            <p>Si su solicitud es rechazada, se le indicarán las razones. Deberá corregir los errores o proporcionar la
+                documentación adicional requerida y volver a presentar su solicitud, si es posible.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Dónde puedo encontrar la normativa aduanera?</h3>
+            <p>Puede consultar la normativa aduanera actualizada en el sitio web oficial del Servicio Nacional de
+                Aduanas o en los organismos reguladores pertinentes de su país.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Qué se considera un "elemento prohibido"?</h3>
+            <p>Los elementos prohibidos son aquellos cuya importación o exportación está restringida o prohibida por
+                ley, como drogas, armas ilegales, especies en peligro de extinción, entre otros. Consulte la legislación
+                vigente para una lista completa.</p>
+        </div>
+        <div class="faq-item">
+            <h3>¿Qué es una declaración jurada SAG?</h3>
+            <p>Es un documento oficial que debe presentar para declarar la entrada de productos de origen animal o
+                vegetal, asegurando que cumplen con las normativas sanitarias y fitosanitarias para prevenir la
+                propagación de plagas y enfermedades.</p>
+        </div>
+    </section>
+
+    <section id="revisionSAG" class="section-container content-section" style="display: none;">
+        <h2>Revisión de Documentos - SAG</h2>
+        <ul id="listaSAG"></ul>
+    </section>
+
+    <section id="revisionPDI" class="section-container content-section" style="display: none;">
+        <h2>Revisión de Documentos - PDI</h2>
+        <ul id="listaPDI"></ul>
+    </section>
+
+    <section id="resolucionFinal" class="section-container content-section" style="display: none;">
+        <h2>Resolución Final - Aduana</h2>
+        <ul id="listaAduana"></ul>
+    </section>
+
+    <section id="ajustes" class="section-container content-section" style="display: none;">
+        <h2>Ajustes de Cuenta</h2>
+        <p>Aquí puedes gestionar tus preferencias de perfil y seguridad.</p>
+    </section>
+
+    <section id="contacto" class="section-container content-section" style="display: none;">
+        <h2>Contacto</h2>
+        <p>Si tienes dudas, contáctanos a través de:</p>
+        <p>Email: soporte@aduana.cl</p>
+        <p>Teléfono: +56 2 1234 5678</p>
+    </section>
+
+    <section id="historialPDI" class="section-container content-section" style="display: none;">
+        <h2>Historial de Revisiones PDI</h2>
+        <p>Aquí puedes ver los documentos que has revisado anteriormente.</p>
+    </section>
+
+    <section id="historialSAG" class="section-container content-section" style="display: none;">
+        <h2>Historial de Revisiones SAG</h2>
+        <p>Aquí puedes ver los documentos que has revisado anteriormente.</p>
+    </section>
+
+    <section id="historialAduana" class="section-container content-section" style="display: none;">
+        <h2>Historial de Resoluciones Aduana</h2>
+        <p>Aquí puedes ver los documentos que has revisado anteriormente.</p>
+    </section>
+
+    <section id="gestionGeneral" class="section-container content-section" style="display: none;">
+        <h2>Gestión General</h2>
+        <p>Herramientas administrativas para Aduana.</p>
+    </section>
+
+    <button onclick="cerrarSesion()" class="logout-button">Cerrar Sesión</button>
+
+    <script src="dashboard.js"></script>
+    <script src="document.js"></script>
+</body>
+
+</html>

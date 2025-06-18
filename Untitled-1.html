@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aduana - Inicio de Sesión</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" required>
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" required>
+
+            <button type="submit">Ingresar</button>
+            <p id="errorMensaje"></p>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #3a6186, #89253e);
+    color: #fff;
+    text-align: center;
+}
+
+.login-container {
+    width: 300px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #3a6186, #89253e);
+    color: #fff;
+    text-align: center;
+}
+
+.navbar {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+    cursor: pointer;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+.navbar ul li:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+#documentos {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 50%;
+}
+
+input,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#revisionDocumentos {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+button.aprobar {
+    background-color: #28a745;
+}
+
+button.rechazar {
+    background-color: #dc3545;
+}
+
+#documentos {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+input,
+textarea,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+textarea {
+    height: 100px;
+}
+
+button {
+    background-color: #ff8c00;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#revisionSAG,
+#revisionPDI {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+button.aprobar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button.rechazar {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#revisionAduana {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: 60%;
+}
+
+button.aprobarFinal {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button.rechazarFinal {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+/* document.js */
+let documentos = [];
+
+function subirDocumento() {
+    let archivo = document.getElementById("fileInput").files[0];
+
+    if (archivo) {
+        documentos.push({ nombre: archivo.name, estado: "Pendiente" });
+        actualizarListaDocumentos();
+    }
+}
+
+function actualizarListaDocumentos() {
+    let lista = document.getElementById("listaDocumentos");
+    lista.innerHTML = "";
+
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `${doc.nombre} - Estado: ${doc.estado}
+            <button onclick="aprobar(${index})">Aprobar</button>
+            <button onclick="rechazar(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+
+function aprobar(index) {
+    documentos[index].estado = "Aprobado";
+    actualizarListaDocumentos();
+}
+
+function rechazar(index) {
+    documentos[index].estado = "Rechazado";
+    actualizarListaDocumentos();
+}
+document.addEventListener("DOMContentLoaded", function () {
+    let usuario = localStorage.getItem("usuario");
+    let listaSAG = document.getElementById("listaSAG");
+    let listaPDI = document.getElementById("listaPDI");
+
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+
+    if (usuario === "sag") {
+        mostrarDocumentosSAG(documentos, listaSAG);
+    } else if (usuario === "pdi") {
+        mostrarDocumentosPDI(documentos, listaPDI);
+    }
+});
+
+function mostrarDocumentosSAG(documentos, lista) {
+    lista.innerHTML = "";
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `
+            ${doc.nombre} - ${doc.declaracion_sag} (Estado: ${doc.estadoSAG || "Pendiente"}) 
+            <button onclick="abrirDocumento('${doc.declaracion_sag}')">Abrir</button>
+            <button onclick="aprobarSAG(${index})">Aprobar</button>
+            <button onclick="rechazarSAG(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+
+function mostrarDocumentosPDI(documentos, lista) {
+    lista.innerHTML = "";
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `
+            ${doc.nombre} - ${doc.elementos_pdi} (Estado: ${doc.estadoPDI || "Pendiente"}) 
+            <button onclick="abrirDocumento('${doc.elementos_pdi}')">Abrir</button>
+            <button onclick="aprobarPDI(${index})">Aprobar</button>
+            <button onclick="rechazarPDI(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+
+function abrirDocumento(archivo) {
+    alert(`Intentando abrir: ${archivo}`);
+}
+
+function aprobarSAG(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoSAG = "Aprobado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosSAG(documentos, document.getElementById("listaSAG"));
+}
+
+function rechazarSAG(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoSAG = "Rechazado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosSAG(documentos, document.getElementById("listaSAG"));
+}
+
+function aprobarPDI(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoPDI = "Aprobado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosPDI(documentos, document.getElementById("listaPDI"));
+}
+
+function rechazarPDI(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoPDI = "Rechazado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosPDI(documentos, document.getElementById("listaPDI"));
+}
+
+function actualizarListaRevision() {
+    let lista = document.getElementById("listaDocumentosRevision");
+    lista.innerHTML = "";
+
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `${doc.nombre} - Estado: ${doc.estado}
+            <button class="aprobar" onclick="aprobar(${index})">Aprobar</button>
+            <button class="rechazar" onclick="rechazar(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+document.getElementById("documentForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let nombre = document.getElementById("nombre").value;
+    let rut = document.getElementById("rut").value;
+    let correo = document.getElementById("correo").value;
+    let direccion = document.getElementById("direccion").value;
+    let telefono = document.getElementById("telefono").value;
+    let fecha_nacimiento = document.getElementById("fecha_nacimiento").value;
+    let comentarios = document.getElementById("comentarios").value;
+
+    let foto_carnet = document.getElementById("foto_carnet").files[0];
+    let declaracion_sag = document.getElementById("declaracion_sag").files[0];
+    let elementos_pdi = document.getElementById("elementos_pdi").files[0];
+
+    let documento = {
+        nombre, rut, correo, direccion, telefono, fecha_nacimiento, comentarios,
+        foto_carnet: foto_carnet.name,
+        declaracion_sag: declaracion_sag.name,
+        elementos_pdi: elementos_pdi.name,
+        estado: "Pendiente"
+    };
+
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos.push(documento);
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+
+    actualizarListaDocumentos();
+});
+
+function actualizarListaDocumentos() {
+    let lista = document.getElementById("listaDocumentos");
+    lista.innerHTML = "";
+
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `${doc.nombre} - Estado: ${doc.estado}
+            <button onclick="aprobar(${index})">Aprobar</button>
+            <button onclick="rechazar(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+document.addEventListener("DOMContentLoaded", function () {
+    let usuario = localStorage.getItem("usuario");
+
+    if (usuario === "sag") {
+        mostrarDocumentosSAG();
+    } else {
+        document.getElementById("revisionSAG").style.display = "none";
+    }
+
+    if (usuario === "pdi") {
+        mostrarDocumentosPDI();
+    } else {
+        document.getElementById("revisionPDI").style.display = "none";
+    }
+});
+
+function mostrarDocumentosSAG() {
+    let lista = document.getElementById("listaSAG");
+    lista.innerHTML = "";
+
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `${doc.nombre} - Declaración SAG: ${doc.declaracion_sag}
+            <button class="aprobar" onclick="aprobarSAG(${index})">Aprobar</button>
+            <button class="rechazar" onclick="rechazarSAG(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+
+function mostrarDocumentosPDI() {
+    let lista = document.getElementById("listaPDI");
+    lista.innerHTML = "";
+
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos.forEach((doc, index) => {
+        let item = document.createElement("li");
+        item.innerHTML = `${doc.nombre} - Elementos PDI: ${doc.elementos_pdi}
+            <button class="aprobar" onclick="aprobarPDI(${index})">Aprobar</button>
+            <button class="rechazar" onclick="rechazarPDI(${index})">Rechazar</button>`;
+        lista.appendChild(item);
+    });
+}
+
+function aprobarSAG(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoSAG = "Aprobado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosSAG();
+}
+
+function rechazarSAG(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoSAG = "Rechazado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosSAG();
+}
+
+function aprobarPDI(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoPDI = "Aprobado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosPDI();
+}
+
+function rechazarPDI(index) {
+    let documentos = JSON.parse(localStorage.getItem("documentos")) || [];
+    documentos[index].estadoPDI = "Rechazado";
+    localStorage.setItem("documentos", JSON.stringify(documentos));
+    mostrarDocumentosPDI();
+}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aduana - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul id="menu">
+            <!-- Menú se genera dinámicamente -->
+        </ul>
+    </nav>
+
+    <section id="content">
+        <h2>Bienvenido, <span id="userName"></span></h2>
+        <p>Aquí podrás gestionar tus documentos y ver el estado de tu solicitud.</p>
+    </section>
+    <section id="revisionSAG">
+        <h2>Revisión de Documentos - SAG</h2>
+        <ul id="listaSAG"></ul>
+    </section>
+
+    <section id="revisionPDI">
+        <h2>Revisión de Documentos - PDI</h2>
+        <ul id="listaPDI"></ul>
+    </section>
+
+    <section id="revisionAduana">
+        <h2>Revisión Final - Aduana</h2>
+        <ul id="listaAduana"></ul>
+    </section>
+    <section id="documentos">
+        <h2>Subir Documentos</h2>
+
+        <form id="documentForm">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required>
+
+            <label for="rut">RUT:</label>
+            <input type="text" id="rut" required>
+
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" required>
+
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required>
+
+            <label for="telefono">Número de Teléfono:</label>
+            <input type="text" id="telefono" required>
+
+            <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nacimiento" required>
+
+            <label for="comentarios">Comentarios:</label>
+            <textarea id="comentarios"></textarea>
+
+            <h3>Subir archivos</h3>
+
+            <label for="foto_carnet">Foto de Carnet:</label>
+            <input type="file" id="foto_carnet" required>
+
+            <label for="declaracion_sag">Declaración Jurada de Ingreso de Alimentos o Animales:</label>
+            <input type="file" id="declaracion_sag" required>
+
+            <label for="elementos_pdi">Elementos Prohibidos:</label>
+            <input type="file" id="elementos_pdi" required>
+
+            <button type="submit">Enviar Documentos</button>
+        </form>
+
+        <h3>Documentos Subidos</h3>
+        <ul id="listaDocumentos"></ul>
+    </section>
+
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+
+    <script src="dashboard.js"></script>
+    <script src="document.js"></script>
+</body>
+
+</html>
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    let usuario = document.getElementById("usuario").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    let usuariosValidos = {
+        "usuario": "1234",
+        "pdi": "pdi123",
+        "sag": "sag123",
+        "aduana": "aduana123"
+    };
+
+    if (usuariosValidos[usuario] && usuariosValidos[usuario] === password) {
+        localStorage.setItem("usuario", usuario);
+        window.location.href = "dashboard.html"; // Redirige correctamente
+    } else {
+        document.getElementById("errorMensaje").innerText = "Usuario o contraseña incorrectos";
+    }
+});
+document.addEventListener("DOMContentLoaded", function () {
+    let usuario = localStorage.getItem("usuario");
+
+    if (!usuario) {
+        window.location.href = "index.html"; // Si no hay usuario, redirige al login
+        return;
+    }
+
+    document.getElementById("userName").innerText = usuario;
+    construirMenu(usuario);
+    mostrarSecciones(usuario);
+});
+
+function construirMenu(usuario) {
+    const menu = document.getElementById("menu");
+    menu.innerHTML = ""; // Limpiar menú previo
+
+    const opciones = {
+        "usuario": ["Subir Documentos", "Preguntas Frecuentes", "Ajustes", "Contacto"],
+        "pdi": ["Ver Documentos", "Aprobar/Rechazar", "Ajustes", "Contacto"],
+        "sag": ["Ver Documentos", "Aprobar/Rechazar", "Ajustes", "Contacto"],
+        "aduana": ["Ver Documentos", "Historial de Aprobaciones", "Aprobar/Rechazar Entrada", "Gestión General", "Ajustes", "Contacto"]
+    };
+
+    if (opciones[usuario]) {
+        opciones[usuario].forEach(opcion => {
+            const item = document.createElement("li");
+            item.innerText = opcion;
+            menu.appendChild(item);
+        });
+    } else {
+        menu.innerHTML = "<li>Error: Rol no reconocido</li>";
+    }
+}
+
+function mostrarSecciones(usuario) {
+    const seccionDocumentos = document.getElementById("documentos");
+    const seccionRevisionSAG = document.getElementById("revisionSAG");
+    const seccionRevisionPDI = document.getElementById("revisionPDI");
+    const seccionRevisionAduana = document.getElementById("revisionAduana");
+
+    if (seccionDocumentos) {
+        seccionDocumentos.style.display = usuario === "usuario" ? "block" : "none";
+    }
+
+    if (seccionRevisionSAG) {
+        seccionRevisionSAG.style.display = usuario === "sag" ? "block" : "none";
+    }
+
+    if (seccionRevisionPDI) {
+        seccionRevisionPDI.style.display = usuario === "pdi" ? "block" : "none";
+    }
+
+    if (usuario === "aduana") {
+        mostrarHistorialAduana();
+        seccionRevisionAduana.style.display = "block";
+    } else if (seccionRevisionAduana) {
+        seccionRevisionAduana.style.display = "none";
+    }
+}
+
+function cerrarSesion() {
+    localStorage.removeItem("usuario");
+    window.location.href = "index.html";
+}
