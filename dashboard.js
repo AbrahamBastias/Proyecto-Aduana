@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("userName").innerText = usuario;
     construirMenu(usuario);
     aplicarModoOscuroGuardado(); // Aplicar modo oscuro al cargar
+    setupDarkModeToggle(); // Configurar el toggle de modo oscuro
 });
 
 function construirMenu(usuario) {
@@ -21,26 +22,22 @@ function construirMenu(usuario) {
             "Subir Documentos": "documentos",
             "Estado de Solicitud": "estado-solicitud",
             "Preguntas Frecuentes": "faq",
-            "Ajustes": "ajustes",
             "Contacto": "contacto"
         },
         "pdi": {
             "Revisión PDI": "revisionPDI",
-            "Historial PDI": "historialPDI", // Añadido aquí
-            "Ajustes": "ajustes",
+            "Historial PDI": "historialPDI",
             "Contacto": "contacto"
         },
         "sag": {
             "Revisión SAG": "revisionSAG",
-            "Historial SAG": "historialSAG", // Añadido aquí
-            "Ajustes": "ajustes",
+            "Historial SAG": "historialSAG",
             "Contacto": "contacto"
         },
         "aduana": {
             "Resolución Final": "resolucionFinal",
-            "Historial Aduana": "historialAduana", // Añadido aquí
+            "Historial Aduana": "historialAduana",
             "Gestión General": "gestionGeneral",
-            "Ajustes": "ajustes",
             "Contacto": "contacto"
         }
     };
@@ -64,18 +61,16 @@ function construirMenu(usuario) {
                     mostrarEstadoSolicitudUsuario();
                 } else if (idSeccion === 'revisionSAG' && usuario === 'sag') {
                     mostrarDocumentosRevisionSAG();
-                } else if (idSeccion === 'historialSAG' && usuario === 'sag') { // Llamada a la función de historial
+                } else if (idSeccion === 'historialSAG' && usuario === 'sag') {
                     mostrarHistorialSAG();
                 } else if (idSeccion === 'revisionPDI' && usuario === 'pdi') {
                     mostrarDocumentosRevisionPDI();
-                } else if (idSeccion === 'historialPDI' && usuario === 'pdi') { // Llamada a la función de historial
+                } else if (idSeccion === 'historialPDI' && usuario === 'pdi') {
                     mostrarHistorialPDI();
                 } else if (idSeccion === 'resolucionFinal' && usuario === 'aduana') {
                     mostrarDocumentosRevisionAduana();
-                } else if (idSeccion === 'historialAduana' && usuario === 'aduana') { // Llamada a la función de historial
+                } else if (idSeccion === 'historialAduana' && usuario === 'aduana') {
                     mostrarHistorialAduana();
-                } else if (idSeccion === 'ajustes') { // Cargar settings al abrir ajustes
-                    cargarAjustesUsuario();
                 }
             });
             menu.appendChild(item);
@@ -84,7 +79,6 @@ function construirMenu(usuario) {
         menu.innerHTML = "<li>Error: Rol no reconocido</li>";
     }
 
-    // Muestra la sección por defecto al cargar la página
     if (seccionesDefault[usuario]) {
         mostrarSeccion(seccionesDefault[usuario]);
         if (seccionesDefault[usuario] === 'estado-solicitud' && usuario === 'usuario') {
@@ -112,11 +106,12 @@ function mostrarSeccion(id) {
 
 function cerrarSesion() {
     localStorage.removeItem("usuario");
+    localStorage.removeItem("darkMode"); // Eliminar la preferencia de modo oscuro al cerrar sesión
     window.location.href = "index.html";
 }
 
 function abrirDocumento(fileName) {
-    if (fileName && fileName !== 'N/A' && fileName !== 'undefined') { // Added undefined check
+    if (fileName && fileName !== 'N/A' && fileName !== 'undefined') {
         alert(`Simulando apertura/descarga del archivo: ${fileName}`);
     } else {
         alert("No hay un archivo disponible para abrir.");
@@ -336,13 +331,12 @@ function manejarAprobacionRechazo(index, campoEstado, nuevoEstado, funcionActual
     localStorage.setItem("documentos", JSON.stringify(documentos));
     alert(`Documento de ${documentos[index].nombre} ${nuevoEstado} por ${campoEstado.replace('estado', '')}.`);
     funcionActualizarVista();
-    // Después de una acción, es bueno recargar la vista del usuario para que vea el cambio
     if (localStorage.getItem("usuario") === "usuario" && typeof mostrarEstadoSolicitudUsuario === 'function') {
         mostrarEstadoSolicitudUsuario();
     }
 }
 
-// --- NUEVAS FUNCIONES DE HISTORIAL ---
+// --- FUNCIONES DE HISTORIAL ---
 
 function mostrarHistorialPDI() {
     const lista = document.getElementById("historialPDI");
@@ -351,7 +345,6 @@ function mostrarHistorialPDI() {
     lista.innerHTML = "";
     const documentos = JSON.parse(localStorage.getItem("documentos")) || [];
 
-    // Filtra documentos donde PDI ya ha tomado una decisión (Aprobado o Rechazado)
     const documentosRevisadosPDI = documentos.filter(doc =>
         doc.estadoPDI === "Aprobado" || doc.estadoPDI === "Rechazado"
     );
@@ -396,7 +389,6 @@ function mostrarHistorialSAG() {
     lista.innerHTML = "";
     const documentos = JSON.parse(localStorage.getItem("documentos")) || [];
 
-    // Filtra documentos donde SAG ya ha tomado una decisión (Aprobado o Rechazado)
     const documentosRevisadosSAG = documentos.filter(doc =>
         doc.estadoSAG === "Aprobado" || doc.estadoSAG === "Rechazado"
     );
@@ -441,7 +433,6 @@ function mostrarHistorialAduana() {
     lista.innerHTML = "";
     const documentos = JSON.parse(localStorage.getItem("documentos")) || [];
 
-    // Filtra documentos donde Aduana ya ha tomado una decisión (Aprobado Final o Rechazado Final)
     const documentosRevisadosAduana = documentos.filter(doc =>
         doc.estadoAduana === "Aprobado Final" || doc.estadoAduana === "Rechazado Final"
     );
@@ -475,8 +466,7 @@ function mostrarHistorialAduana() {
     });
 }
 
-// --- Funciones de ajustes (modo oscuro, email, contraseña) ---
-const USERS_KEY = "usuariosRegistrados"; // Definir la clave para los usuarios
+// --- Funciones de Modo Oscuro ---
 
 function aplicarModoOscuroGuardado() {
     const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
@@ -487,96 +477,12 @@ function aplicarModoOscuroGuardado() {
     }
 }
 
-function cargarAjustesUsuario() {
-    const currentEmailInput = document.getElementById('currentEmail');
+function setupDarkModeToggle() {
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const usuarioActual = localStorage.getItem('usuario'); // Obtener el nombre de usuario del localStorage
-
-    if (usuarioActual && currentEmailInput) {
-        let usuarios = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-        let usuarioData = usuarios.find(u => u.username === usuarioActual);
-
-        if (usuarioData) {
-            currentEmailInput.value = usuarioData.email || '';
-        }
-    }
-
     if (darkModeToggle) {
-        darkModeToggle.checked = localStorage.getItem('darkMode') === 'true';
         darkModeToggle.onchange = function () {
             document.body.classList.toggle('dark-mode', this.checked);
             localStorage.setItem('darkMode', this.checked);
-        };
-    }
-
-    // Event listener para actualizar email
-    const updateContactForm = document.getElementById('updateContactForm');
-    if (updateContactForm) {
-        updateContactForm.onsubmit = function (event) {
-            event.preventDefault();
-            const newEmail = document.getElementById('newEmail').value;
-            if (!newEmail) {
-                alert("Por favor, ingresa un nuevo email.");
-                return;
-            }
-
-            if (usuarioActual) {
-                let usuarios = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-                let usuarioIndex = usuarios.findIndex(u => u.username === usuarioActual);
-
-                if (usuarioIndex !== -1) {
-                    usuarios[usuarioIndex].email = newEmail;
-                    localStorage.setItem(USERS_KEY, JSON.stringify(usuarios));
-                    alert("Email actualizado con éxito.");
-                    document.getElementById('currentEmail').value = newEmail; // Actualizar el campo deshabilitado
-                    document.getElementById('newEmail').value = ''; // Limpiar campo
-                } else {
-                    alert("Error: Usuario no encontrado para actualizar el email.");
-                }
-            }
-        };
-    }
-
-    // Event listener para cambiar contraseña
-    const changePasswordForm = document.getElementById('changePasswordForm');
-    if (changePasswordForm) {
-        changePasswordForm.onsubmit = function (event) {
-            event.preventDefault();
-            const currentPassword = document.getElementById('currentPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-
-            if (!currentPassword || !newPassword || !confirmNewPassword) {
-                alert("Por favor, rellena todos los campos de contraseña.");
-                return;
-            }
-
-            if (newPassword !== confirmNewPassword) {
-                alert("La nueva contraseña y la confirmación no coinciden.");
-                return;
-            }
-
-            if (usuarioActual) {
-                let usuarios = JSON.parse(localStorage.getItem(USERS_KEY)) || [];
-                let usuarioIndex = usuarios.findIndex(u => u.username === usuarioActual);
-
-                if (usuarioIndex !== -1) {
-                    // En una app real, aquí verificarías la contraseña actual con un hash seguro
-                    if (usuarios[usuarioIndex].password === currentPassword) { // Simulación
-                        usuarios[usuarioIndex].password = newPassword;
-                        localStorage.setItem(USERS_KEY, JSON.stringify(usuarios));
-                        alert("Contraseña actualizada con éxito.");
-                        // Limpiar campos
-                        document.getElementById('currentPassword').value = '';
-                        document.getElementById('newPassword').value = '';
-                        document.getElementById('confirmNewPassword').value = '';
-                    } else {
-                        alert("La contraseña actual es incorrecta.");
-                    }
-                } else {
-                    alert("Error: Usuario no encontrado para cambiar la contraseña.");
-                }
-            }
         };
     }
 }

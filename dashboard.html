@@ -9,13 +9,28 @@
 </head>
 
 <body>
+    <div class="dark-mode-toggle-container top-right">
+        <label for="darkModeToggle">Modo Oscuro</label>
+        <label class="switch">
+            <input type="checkbox" id="darkModeToggle">
+            <span class="slider round"></span>
+        </label>
+    </div>
+
+    <header class="app-header">
+        <img src="img/logo-interaduana.png" alt="Logo InterAduana Chile" class="app-logo">
+        <h1 class="app-title">Sistema InterAduana Chile</h1>
+    </header>
+
     <nav class="navbar">
+        <div class="navbar-header">
+            <h2 class="welcome-text">Bienvenido, <span id="userName"></span></h2>
+        </div>
         <ul id="menu">
         </ul>
     </nav>
 
     <section id="content" class="section-container">
-        <h2>Bienvenido, <span id="userName"></span></h2>
         <p>Aquí podrás gestionar tus documentos y ver el estado de tu solicitud.</p>
     </section>
 
@@ -126,11 +141,6 @@
         <ul id="listaAduana"></ul>
     </section>
 
-    <section id="ajustes" class="section-container content-section" style="display: none;">
-        <h2>Ajustes de Cuenta</h2>
-        <p>Aquí puedes gestionar tus preferencias de perfil y seguridad.</p>
-    </section>
-
     <section id="contacto" class="section-container content-section" style="display: none;">
         <h2>Contacto</h2>
         <p>Si tienes dudas, contáctanos a través de:</p>
@@ -159,6 +169,11 @@
     </section>
 
     <button onclick="cerrarSesion()" class="logout-button">Cerrar Sesión</button>
+
+    <footer class="main-footer">
+        <img src="img/logo-gobierno-chile.png" alt="Logo Gobierno de Chile" class="footer-logo">
+        <p>&copy; 2025 InterAduana Chile. Todos los derechos reservados.</p>
+    </footer>
 
     <script src="dashboard.js"></script>
     <script src="document.js"></script>
